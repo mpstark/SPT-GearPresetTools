@@ -16,7 +16,7 @@ namespace AutoSaveGearPreset.Patches
         [PatchPostfix]
         public static void PatchPostfix()
         {
-            Plugin.Instance.TrySaveCurrentGear();
+            Plugin.TrySaveCurrentGear();
         }
     }
 }

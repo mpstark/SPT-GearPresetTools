@@ -4,7 +4,6 @@ using BepInEx;
 using BepInEx.Logging;
 using EFT;
 using Aki.Reflection.Utils;
-using DrakiaXYZ.VersionChecker;
 using AutoSaveGearPreset.Patches;
 using HarmonyLib;
 using EFT.Builds;
@@ -15,22 +14,23 @@ namespace AutoSaveGearPreset
     [BepInPlugin("com.mpstark.AutoSaveGearPreset", "AutoSaveGearPreset", BuildInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const int TarkovVersion = 29197;
         public static Plugin Instance;
         public static ManualLogSource Log => Instance.Logger;
 
-        public static ConstructorInfo BuildConstructor;
-        public static MethodInfo SaveBuildMethod;
+        public static FieldInfo SessionEquipmentBuildStorageField = AccessTools.Field(typeof(ISession), "EquipmentBuildsStorage");
+        public static Type BuildStorageType = SessionEquipmentBuildStorageField.GetType();
+        public static MethodInfo BuildStorageFindCustomBuildByNameMethod = AccessTools.Method(BuildStorageType, "FindCustomBuildByName");
+        public static MethodInfo BuildStorageSaveBuildMethod = AccessTools.Method(BuildStorageType, "SaveBuild");
+        public static Type BuildType = BuildStorageSaveBuildMethod.GetParameters()[0].ParameterType;
+        public static PropertyInfo BuildIdProperty = AccessTools.Property(BuildType, "Id");
+        public static PropertyInfo SessionProfileProperty = AccessTools.Property(typeof(ISession), "Profile");
+        public static ISession Session => ClientAppUtils.GetMainApp().GetClientBackEndSession();
+        public static Profile PlayerProfile => SessionProfileProperty.GetValue(Session) as Profile;
 
         public static string AutoSaveKitName = "Last Kit";
 
         internal void Awake()
         {
-            if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
-            {
-                throw new Exception("Invalid EFT Version");
-            }
-
             Instance = this;
             DontDestroyOnLoad(this);
 
@@ -38,27 +38,40 @@ namespace AutoSaveGearPreset
             new MatchMakerTimeHasComeShowPatch().Enable();
         }
 
-        internal void TrySaveCurrentGear()
+        public static void TrySaveCurrentGear()
         {
-            var session = ClientAppUtils.GetMainApp().GetClientBackEndSession();
+            SaveCurrentEquipmentAsBuild(AutoSaveKitName);
+        }
 
-            // find methodinfo and constructorinfo for out methods to avoid using GClass3182 directly
-            if (BuildConstructor == null)
-            {
-                SaveBuildMethod = AccessTools.Method(session.EquipmentBuildsStorage.GetType(), "SaveBuild");
-                BuildConstructor = AccessTools.Constructor(SaveBuildMethod.GetParameters()[0].ParameterType, new[] { typeof(MongoID), typeof(string), typeof(EquipmentClass), typeof(EEquipmentBuildType) });
-            }
+        private static object FindCustomBuildByName(string name)
+        {
+            var buildStorage = SessionEquipmentBuildStorageField.GetValue(Session);
+            return BuildStorageFindCustomBuildByNameMethod.Invoke(buildStorage, new object[] { name });
+        }
 
-            // try to get the last preset with that name
-            var oldKit = session.EquipmentBuildsStorage.FindCustomBuildByName(AutoSaveKitName);
-            var mongoID = oldKit == null ? new MongoID(session.Profile) : oldKit.Id;
+        private static void SaveBuild(object build)
+        {
+            var buildStorage = SessionEquipmentBuildStorageField.GetValue(Session);
+            BuildStorageSaveBuildMethod.Invoke(buildStorage, new[] { build });
+        }
 
+        private static void SaveCurrentEquipmentAsBuild(string name)
+        {
+            // INSTEAD OF THIS
+            // var oldKit = Session.EquipmentBuildsStorage.FindCustomBuildByName(AutoSaveKitName);
+            // var mongoID = oldKit == null ? new MongoID(Session.Profile) : oldKit.Id;
             // var newKit = new GClass3182(mongoID, AutoSaveKitName, session.Profile.Inventory.Equipment, EEquipmentBuildType.Custom);
             // session.EquipmentBuildsStorage.SaveBuild(newKit);
 
-            // cumbersome to do without using the class directly
-            var newKit = BuildConstructor.Invoke(new object[] { mongoID, AutoSaveKitName, session.Profile.Inventory.Equipment, EEquipmentBuildType.Custom });
-            SaveBuildMethod.Invoke(session.EquipmentBuildsStorage, new[] { newKit });
+            var oldKit = FindCustomBuildByName(name);
+            var mongoID = (oldKit == null)
+                            ? new MongoID(PlayerProfile)
+                            : (MongoID)BuildIdProperty.GetValue(oldKit);
+            var newKit = Activator.CreateInstance(BuildType, new object[] { mongoID,
+                                                                            AutoSaveKitName,
+                                                                            PlayerProfile.Inventory.Equipment,
+                                                                            EEquipmentBuildType.Custom }); 
+            SaveBuild(newKit);
         }
     }
 }
