@@ -66,6 +66,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>$(SolutionDir)dependencies\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="com.unity.multiplayer-hlapi.Runtime.dll">
+      <HintPath>$(SolutionDir)dependencies\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <!-- Gets the commit hash from git -->
@@ -84,7 +87,7 @@
     <ItemGroup>
       <VersionFile Include="VERSION.txt" />
       <VersionCs Include="$(ProjectDir)Version.cs" />
-      <Compile Include="@(VersionCs)" />
+      <Compile Include="@(VersionCs)" Exclude="@(VersionCs)" /> <!-- Resolves double include -->
       <FileWrites Include="@(VersionCs)" />
     </ItemGroup>
 
