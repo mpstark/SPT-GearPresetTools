@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoSaveGearPreset", "AutoSaveGearPreset.csproj", "{C3EDFE8B-2B4E-4E0A-9B3E-29C3BF91D9BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearPresetTools", "GearPresetTools.csproj", "{C3EDFE8B-2B4E-4E0A-9B3E-29C3BF91D9BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,10 +1,10 @@
 ## About Mod
 
-Saves your current build on entering a raid as a preset
+A collection of tools to make using gear presets better.
 
 ## Installation
 
-[Releases are here](https://github.com/mpstark/SPT-AutoSaveGearPreset/releases). Open zip file and drag `BepInEx` folder into root of your SPT-AKI install.
+[Releases are here](https://github.com/mpstark/SPT-GearPresetTools/releases). Open zip file and drag `BepInEx` folder into root of your SPT-AKI install.
 
 ## License
 

@@ -4,7 +4,7 @@ using EFT.UI.Matchmaker;
 using HarmonyLib;
 using System.Reflection;
 
-namespace AutoSaveGearPreset.Patches
+namespace GearPresetTools.Patches
 {
     internal class MatchMakerTimeHasComeShowPatch : ModulePatch
     {
