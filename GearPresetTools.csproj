@@ -31,6 +31,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(TarkovManagedDir)Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>$(TarkovManagedDir)Sirenix.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>$(TarkovManagedDir)Unity.TextMeshPro.dll</HintPath>
     </Reference>

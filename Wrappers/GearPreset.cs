@@ -17,6 +17,7 @@ namespace GearPresetTools.Wrappers
         // properties
         public object Value { get; }
         public MongoID Id => (MongoID)_idProperty.GetValue(Value);
+        public string IdString => (MongoID)_idProperty.GetValue(Value);
         public EquipmentClass Equipment => (EquipmentClass)_equipmentProperty.GetValue(Value);
 
         public GearPreset(object value)

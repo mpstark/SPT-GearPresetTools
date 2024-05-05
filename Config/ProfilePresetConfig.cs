@@ -74,6 +74,37 @@ namespace GearPresetTools.Config
             return _profiles[profileId].Presets[presetId].SlotsToIgnore[slot];
         }
 
+        public bool SlotHasIgnoreValue(string profileId, string presetId, EquipmentSlot slot)
+        {
+            if (!_profiles.ContainsKey(profileId) ||
+                !_profiles[profileId].Presets.ContainsKey(presetId))
+            {
+                return false;
+            }
+
+            return _profiles[profileId].Presets[presetId].SlotsToIgnore.ContainsKey(slot);
+        }
+
+        public HashSet<EquipmentSlot> GetIgnoredSlots(string profileId, string presetId)
+        {
+            var slots = new HashSet<EquipmentSlot>();
+            if (!_profiles.ContainsKey(profileId) || !_profiles[profileId].Presets.ContainsKey(presetId))
+            {
+                return slots;
+            }
+
+            // get all slots that should be ignored
+            foreach (var (slot, shouldIgnore) in _profiles[profileId].Presets[presetId].SlotsToIgnore)
+            {
+                if (shouldIgnore)
+                {
+                    slots.Add(slot);
+                }
+            }
+
+            return slots;
+        }
+
         public void SaveToFile()
         {
             File.WriteAllText(_configPath, JsonConvert.SerializeObject(_profiles, Formatting.Indented));

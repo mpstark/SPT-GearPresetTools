@@ -16,12 +16,8 @@ namespace GearPresetTools.Config
         // public static ConfigEntry<bool> ShouldAutoSavePresetPerMap;  // future implementation?
         public static ConfigEntry<string> AutoSavePresetName;
 
-        private const string DontSaveSlotsSectionTitle = "Slots To Not Save";
-        public static Dictionary<EquipmentSlot, ConfigEntry<bool>> DontSaveSlots = new Dictionary<EquipmentSlot, ConfigEntry<bool>>();
-
-        private const string IgnoreEmptySlotSectionTitle = "Slots To Ignore If Preset Empty";
-        public static Dictionary<EquipmentSlot, ConfigEntry<bool>> DontUnequipSlots = new Dictionary<EquipmentSlot, ConfigEntry<bool>>();
-
+        private const string IgnoreSlotsByDefaultSectionTitle = "New Gear Presets Ignore These Slots By Default";
+        public static Dictionary<EquipmentSlot, ConfigEntry<bool>> IgnoreSlotsByDefault = new Dictionary<EquipmentSlot, ConfigEntry<bool>>();
 
         public static void Init(ConfigFile Config)
         {
@@ -45,30 +41,16 @@ namespace GearPresetTools.Config
                     null,
                     new ConfigurationManagerAttributes { })));
 
-            // add don't save config for each slot
+            // add ignore slots by default config
             foreach (var slot in SlotUtils.Slots)
             {
                 var slotString = slot.ToString();
-                ConfigEntries.Add(DontSaveSlots[slot] = Config.Bind(
-                    DontSaveSlotsSectionTitle,
-                    $"Do Not Save: {slotString}",
+                ConfigEntries.Add(IgnoreSlotsByDefault[slot] = Config.Bind(
+                    IgnoreSlotsByDefaultSectionTitle,
+                    $"{slotString}",
                     false,
                     new ConfigDescription(
-                        $"While saving a new preset, don't save this",
-                        null,
-                    new ConfigurationManagerAttributes { })));
-            }
-
-            // add don't overwrite if empty for each slow
-            foreach (var slot in SlotUtils.Slots)
-            {
-                var slotString = slot.ToString();
-                ConfigEntries.Add(DontUnequipSlots[slot] = Config.Bind(
-                    IgnoreEmptySlotSectionTitle,
-                    $"Do Not Unequip: {slotString}",
-                    false,
-                    new ConfigDescription(
-                        $"While loading a saved preset with nothing in this slot, don't unequip the slot",
+                        $"While saving a new preset, mark this slot as ignored, by default",
                         null,
                     new ConfigurationManagerAttributes { })));
             }

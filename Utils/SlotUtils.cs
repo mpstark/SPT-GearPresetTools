@@ -16,7 +16,6 @@ namespace GearPresetTools.Utils
             EquipmentSlot.SecuredContainer,
             EquipmentSlot.TacticalVest,
             EquipmentSlot.ArmorVest,
-            EquipmentSlot.Pockets,
             EquipmentSlot.Eyewear,
             EquipmentSlot.FaceCover,
             EquipmentSlot.Headwear,

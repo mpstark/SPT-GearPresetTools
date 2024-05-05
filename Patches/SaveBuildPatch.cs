@@ -16,7 +16,7 @@ namespace GearPresetTools.Patches
         public static void PatchPrefix(object build)
         {
             var preset = new GearPreset(build);
-            PartialPresets.TryRemoveSlotsFromSavingBuild(preset);
+            PartialGearPresets.TrySetDefaultIgnoreOnSavingBuild(preset);
         }
     }
 }

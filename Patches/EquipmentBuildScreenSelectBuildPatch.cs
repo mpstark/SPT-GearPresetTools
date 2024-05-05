@@ -23,10 +23,10 @@ namespace GearPresetTools.Patches
             });
         }
 
-        [PatchPostfix]
-        public static void PatchPostfix(object selectedBuild)
+        [PatchPrefix]
+        public static void PatchPrefix(object selectedBuild)
         {
-            PartialPresets.SelectedGearPreset = new GearPreset(selectedBuild);
+            PartialGearPresets.SelectedGearPreset = new GearPreset(selectedBuild);
         }
     }
 }

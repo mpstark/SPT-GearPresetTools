@@ -20,5 +20,6 @@ namespace GearPresetTools.Utils
 
         public static ISession Session => ClientAppUtils.GetMainApp().GetClientBackEndSession();
         public static Profile SessionProfile => _sessionProfileProperty.GetValue(Session) as Profile;
+        public static string ProfileId => SessionProfile.ProfileId;
     }
 }
