@@ -1,10 +1,10 @@
-﻿using BepInEx.Configuration;
+﻿using System.Collections.Generic;
+using BepInEx.Configuration;
 using EFT.InventoryLogic;
-using System.Collections.Generic;
 using GearPresetTools.Utils;
 
 // THIS IS HEAVILY BASED ON DRAKIAXYZ'S SPT-QUICKMOVETOCONTAINER
-namespace GearPresetTools
+namespace GearPresetTools.Config
 {
     internal class Settings
     {

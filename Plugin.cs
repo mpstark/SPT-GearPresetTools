@@ -1,13 +1,15 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using Aki.Reflection.Utils;
 using BepInEx;
 using BepInEx.Logging;
 using EFT;
-using Aki.Reflection.Utils;
+using GearPresetTools.Config;
 using GearPresetTools.Patches;
 using GearPresetTools.Utils;
 using HarmonyLib;
-using System.Linq;
 
 namespace GearPresetTools
 {
@@ -17,12 +19,21 @@ namespace GearPresetTools
     {
         public static Plugin Instance;
         public static ManualLogSource Log => Instance.Logger;
+        public static string PluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string ProfilePresetConfigPath = Path.Combine(PluginFolder, "ProfilePresetConfig.json");
 
         public static ISession Session => ClientAppUtils.GetMainApp().GetClientBackEndSession();
         public static Profile PlayerProfile => _sessionProfileProperty.GetValue(Session) as Profile;
 
-        private static Type _profileInterface= typeof(ISession).GetInterfaces().First(x => x.GetProperties().Length == 2 && AccessTools.Property(x, "Profile") != null);
+        private static Type _profileInterface = typeof(ISession).GetInterfaces().First(i =>
+            {
+                var properties = i.GetProperties();
+                return properties.Length == 2 &&
+                       properties.Any(p => p.Name == "Profile");
+            });
         private static PropertyInfo _sessionProfileProperty = AccessTools.Property(_profileInterface, "Profile");
+
+        public static ProfilePresetConfig ProfilePresetConfig;
 
         internal void Awake()
         {
@@ -35,13 +46,24 @@ namespace GearPresetTools
             // patches
             new MatchMakerTimeHasComeShowPatch().Enable();
             new SaveBuildPatch().Enable();
-            new LoadBuildPatch().Enable();
+            new InteractionsHandlerClassTransferContentPatch().Enable();
+
+            // try load extra config
+            if (File.Exists(ProfilePresetConfigPath))
+            {
+                ProfilePresetConfig = new ProfilePresetConfig(ProfilePresetConfigPath);
+            }
+            else
+            {
+                ProfilePresetConfig = new ProfilePresetConfig();
+                ProfilePresetConfig.SaveToFile(ProfilePresetConfigPath);
+            }
         }
 
         /// <summary>
         /// If configured, save the current state of the character as a gear preset
         /// </summary>
-        public static void TrySaveCurrentGear()
+        public static void TrySaveCurrentGearToPreset()
         {
             if (!Settings.ShouldAutoSavePreset.Value)
             {
@@ -68,9 +90,17 @@ namespace GearPresetTools
         }
 
         /// <summary>
+        /// Save the ProfilePresetConfig to a json file
+        /// </summary>
+        public static void TrySaveProfilePresetConfig()
+        {
+            ProfilePresetConfig.SaveToFile(ProfilePresetConfigPath);
+        }
+
+        /// <summary>
         /// If configured, prevent empty slots in a preset from applying to inventory
         /// </summary>
-        internal static void TryPreventEmptyOverwrite(LootItemClass presetItemCopy, LootItemClass inventoryItem)
+        internal static void TryPreventEmptySlotOverwrite(LootItemClass presetItemCopy, LootItemClass inventoryItem)
         {
             // only affect if top level
             if (inventoryItem.Id != PlayerProfile.Inventory.Equipment.Id)

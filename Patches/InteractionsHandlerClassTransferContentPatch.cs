@@ -4,7 +4,7 @@ using HarmonyLib;
 
 namespace GearPresetTools.Patches
 {
-    internal class LoadBuildPatch : ModulePatch
+    internal class InteractionsHandlerClassTransferContentPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -24,7 +24,7 @@ namespace GearPresetTools.Patches
             var copied = presetItem.CloneItem();
             presetItem = copied;
 
-            Plugin.TryPreventEmptyOverwrite(copied, toItem);
+            Plugin.TryPreventEmptySlotOverwrite(copied, toItem);
         }
     }
 }

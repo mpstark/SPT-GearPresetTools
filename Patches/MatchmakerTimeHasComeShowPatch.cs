@@ -1,8 +1,8 @@
-﻿using Aki.Reflection.Patching;
+﻿using System.Reflection;
+using Aki.Reflection.Patching;
 using EFT;
 using EFT.UI.Matchmaker;
 using HarmonyLib;
-using System.Reflection;
 
 namespace GearPresetTools.Patches
 {
@@ -16,7 +16,7 @@ namespace GearPresetTools.Patches
         [PatchPostfix]
         public static void PatchPostfix()
         {
-            Plugin.TrySaveCurrentGear();
+            Plugin.TrySaveCurrentGearToPreset();
         }
     }
 }
