@@ -26,9 +26,7 @@ namespace GearPresetTools
             // features
             AutoSaveGearPreset.Enable();
             PartialGearPresets.Enable();
-
-            // patch for saving profile preset config
-            new EquipmentBuildScreenClosePatch().Enable();
+            KeepProfilePresetConfigValid.Enable();
         }
     }
 }

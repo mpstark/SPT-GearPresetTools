@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Aki.Reflection.Patching;
 using EFT.UI;
-using GearPresetTools.Config;
+using GearPresetTools.Features;
 using HarmonyLib;
 
 namespace GearPresetTools.Patches
@@ -28,7 +28,7 @@ namespace GearPresetTools.Patches
             }
             _lastCall = DateTime.UtcNow;
 
-            ProfilePresetConfig.Instance.SaveToFile();
+            KeepProfilePresetConfigValid.SaveProfilePresetConfig();
         }
     }
 }

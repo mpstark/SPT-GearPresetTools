@@ -89,9 +89,6 @@ namespace GearPresetTools.Features
             // but it's close
             var buildsScreen = gear.gameObject.transform.parent.parent.parent.parent.parent.gameObject.GetComponent<EquipmentBuildsScreen>();
 
-            Plugin.Log.LogInfo($"{slotViews}");
-            Plugin.Log.LogInfo($"{SelectedGearPreset}");
-
             // go through all slots on buildGear and add our click handler
             // and setup our ignored slots
             foreach (var (slot, slotView) in slotViews)

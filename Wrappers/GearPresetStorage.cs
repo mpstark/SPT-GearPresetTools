@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using EFT;
 using GearPresetTools.Utils;
@@ -17,6 +19,7 @@ namespace GearPresetTools.Wrappers
         private static PropertyInfo _sessionEquipmentBuildStorageProperty = AccessTools.Property(typeof(ISession), "EquipmentBuildsStorage");
         internal static Type WrappedType = _sessionEquipmentBuildStorageProperty.PropertyType;
         private static MethodInfo _findCustomBuildByNameMethod = AccessTools.Method(WrappedType, "FindCustomBuildByName");
+        private static PropertyInfo _equipmentBuildsProperty = AccessTools.Property(WrappedType, "EquipmentBuilds");
         internal static MethodInfo SaveBuildMethod = AccessTools.Method(WrappedType, "SaveBuild");
 
         // properties
@@ -54,6 +57,15 @@ namespace GearPresetTools.Wrappers
             var mongoID = (oldKit == null) ? new MongoID(ClientUtils.SessionProfile) : oldKit.Id;
 
             SaveBuild(new GearPreset(mongoID, name, equipment));
+        }
+
+        public IEnumerable<string> GetAllGearPresetIds()
+        {
+            var builds = _equipmentBuildsProperty.GetValue(Value) as IDictionary;
+            foreach (DictionaryEntry entry in builds)
+            {
+                yield return ((MongoID)entry.Key).ToString();
+            }
         }
     }
 }

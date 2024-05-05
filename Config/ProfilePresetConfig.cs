@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using EFT.InventoryLogic;
 using Newtonsoft.Json;
 
@@ -103,6 +104,24 @@ namespace GearPresetTools.Config
             }
 
             return slots;
+        }
+
+        public void RemoveInvalidPresetIds(string profileId, IEnumerable<string> validPresetIds)
+        {
+            if (!_profiles.ContainsKey(profileId))
+            {
+                return;
+            }
+
+            var validIds = new HashSet<string>(validPresetIds);
+            var invalidIds = _profiles[profileId].Presets.Where(p => !validIds.Contains(p.Key))
+                                                         .Select(p => p.Key)
+                                                         .ToList();
+
+            foreach (var invalidId in invalidIds)
+            {
+                _profiles[profileId].Presets.Remove(invalidId);
+            }
         }
 
         public void SaveToFile()
