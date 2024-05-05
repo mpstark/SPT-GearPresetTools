@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using EFT.InventoryLogic;
@@ -7,6 +8,13 @@ namespace GearPresetTools.Config
 {
     public class ProfilePresetConfig
     {
+        private static string _configPath = Path.Combine(Plugin.Path, "ProfilePresetConfig.json");
+
+        // lazy singleton
+        private static readonly Lazy<ProfilePresetConfig> lazy = new Lazy<ProfilePresetConfig>(() => new ProfilePresetConfig());
+        public static ProfilePresetConfig Instance { get { return lazy.Value; } }
+
+
         private class PerPresetConfig
         {
             // this class is in case we want more per-preset config added on
@@ -24,17 +32,22 @@ namespace GearPresetTools.Config
 
         public ProfilePresetConfig()
         {
-        }
+            if (!File.Exists(_configPath))
+            {
+                return;
+            }
 
-        public ProfilePresetConfig(string jsonPath)
-        {
+            // try to load from path
             try
             {
-                _profiles = JsonConvert.DeserializeObject<Dictionary<string, PerProfileConfig>>(File.ReadAllText(jsonPath));
+                _profiles = JsonConvert.DeserializeObject<Dictionary<string, PerProfileConfig>>(File.ReadAllText(_configPath));
+                return;
             }
-            catch
+            catch (Exception e)
             {
-                Plugin.Log.LogWarning($"Loading ProfilePresetConfig failed from json at path: {jsonPath}");
+                Plugin.Log.LogError($"Loading ProfilePresetConfig failed from json at path: {_configPath}");
+                Plugin.Log.LogError($"Exception given was: {e.Message}");
+                Plugin.Log.LogError($"{e.StackTrace}");
             }
         }
 
@@ -61,9 +74,9 @@ namespace GearPresetTools.Config
             return _profiles[profileId].Presets[presetId].SlotsToIgnore[slot];
         }
 
-        public void SaveToFile(string filePath)
+        public void SaveToFile()
         {
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(_profiles, Formatting.Indented));
+            File.WriteAllText(_configPath, JsonConvert.SerializeObject(_profiles, Formatting.Indented));
         }
     }
 }

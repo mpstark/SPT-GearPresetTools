@@ -2,6 +2,7 @@
 using Aki.Reflection.Patching;
 using EFT;
 using EFT.UI.Matchmaker;
+using GearPresetTools.Features;
 using HarmonyLib;
 
 namespace GearPresetTools.Patches
@@ -10,13 +11,15 @@ namespace GearPresetTools.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(MatchmakerTimeHasCome), nameof(MatchmakerTimeHasCome.Show), new[] {typeof(ISession), typeof(RaidSettings)});
+            return AccessTools.Method(typeof(MatchmakerTimeHasCome),
+                                      nameof(MatchmakerTimeHasCome.Show),
+                                      new[] {typeof(ISession), typeof(RaidSettings)});
         }
 
         [PatchPostfix]
         public static void PatchPostfix()
         {
-            Plugin.TrySaveCurrentGearToPreset();
+            AutoSaveGearPreset.TrySave();
         }
     }
 }

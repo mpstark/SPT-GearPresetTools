@@ -1,5 +1,6 @@
 using System.Reflection;
 using Aki.Reflection.Patching;
+using GearPresetTools.Features;
 using HarmonyLib;
 
 namespace GearPresetTools.Patches
@@ -24,7 +25,7 @@ namespace GearPresetTools.Patches
             var copied = presetItem.CloneItem();
             presetItem = copied;
 
-            Plugin.TryPreventEmptySlotOverwrite(copied, toItem);
+            GearPresetIgnoreSlots.TryPreventEmptySlotOverwrite(copied, toItem);
         }
     }
 }

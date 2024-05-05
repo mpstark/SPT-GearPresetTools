@@ -1,6 +1,7 @@
 using System.Reflection;
 using Aki.Reflection.Patching;
-using GearPresetTools.Utils;
+using GearPresetTools.Features;
+using GearPresetTools.Wrappers;
 
 namespace GearPresetTools.Patches
 {
@@ -8,13 +9,13 @@ namespace GearPresetTools.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
-            return GearPresetUtils.BuildStorageSaveBuildMethod;
+            return GearPresetStorage.SaveBuildMethod;
         }
 
         [PatchPrefix]
         public static void PatchPrefix(object build)
         {
-            Plugin.TryRemoveSlotsFromSavingBuild(build);
+            GearPresetIgnoreSlots.TryRemoveSlotsFromSavingBuild(build);
         }
     }
 }
