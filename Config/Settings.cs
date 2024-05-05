@@ -13,7 +13,7 @@ namespace GearPresetTools.Config
 
         private const string AutoSaveSectionTitle = "Auto Save Gear Preset";
         public static ConfigEntry<bool> ShouldAutoSavePreset;
-        // public static ConfigEntry<bool> IsAutoSavePresetPerMap;  // future idea?
+        // public static ConfigEntry<bool> ShouldAutoSavePresetPerMap;  // future implementation?
         public static ConfigEntry<string> AutoSavePresetName;
 
         private const string DontSaveSlotsSectionTitle = "Slots To Not Save";

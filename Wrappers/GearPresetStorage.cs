@@ -15,7 +15,7 @@ namespace GearPresetTools.Wrappers
 
         // reflection
         private static PropertyInfo _sessionEquipmentBuildStorageProperty = AccessTools.Property(typeof(ISession), "EquipmentBuildsStorage");
-        public static Type WrappedType = _sessionEquipmentBuildStorageProperty.PropertyType;
+        internal static Type WrappedType = _sessionEquipmentBuildStorageProperty.PropertyType;
         private static MethodInfo _findCustomBuildByNameMethod = AccessTools.Method(WrappedType, "FindCustomBuildByName");
         internal static MethodInfo SaveBuildMethod = AccessTools.Method(WrappedType, "SaveBuild");
 

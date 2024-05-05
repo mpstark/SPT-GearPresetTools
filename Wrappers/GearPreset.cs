@@ -10,7 +10,7 @@ namespace GearPresetTools.Wrappers
     public class GearPreset
     {
         // reflection
-        public static Type WrappedType = GearPresetStorage.SaveBuildMethod.GetParameters()[0].ParameterType;
+        internal static Type WrappedType = GearPresetStorage.SaveBuildMethod.GetParameters()[0].ParameterType;
         private static PropertyInfo _idProperty = AccessTools.Property(WrappedType, "Id");
         private static PropertyInfo _equipmentProperty = AccessTools.Property(WrappedType, "Equipment");
 

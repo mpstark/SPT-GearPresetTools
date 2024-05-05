@@ -25,7 +25,7 @@ namespace GearPresetTools.Patches
             var copied = presetItem.CloneItem();
             presetItem = copied;
 
-            GearPresetIgnoreSlots.TryPreventEmptySlotOverwrite(copied, toItem);
+            PartialPresets.TryPreventEmptySlotOverwrite(copied, toItem);
         }
     }
 }

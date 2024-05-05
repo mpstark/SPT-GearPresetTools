@@ -26,7 +26,7 @@ namespace GearPresetTools.Patches
         [PatchPostfix]
         public static void PatchPostfix(object selectedBuild)
         {
-            GearPresetIgnoreSlots.SelectedGearPreset = new GearPreset(selectedBuild);
+            PartialPresets.SelectedGearPreset = new GearPreset(selectedBuild);
         }
     }
 }

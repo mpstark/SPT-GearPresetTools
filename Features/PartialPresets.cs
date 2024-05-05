@@ -5,7 +5,7 @@ using GearPresetTools.Wrappers;
 
 namespace GearPresetTools.Features
 {
-    public static class GearPresetIgnoreSlots
+    public static class PartialPresets
     {
         public static GearPreset SelectedGearPreset { get; set; }
 
@@ -19,10 +19,8 @@ namespace GearPresetTools.Features
         /// <summary>
         /// If configured, remove slots from a build being saved 
         /// </summary>
-        public static void TryRemoveSlotsFromSavingBuild(object build)
+        public static void TryRemoveSlotsFromSavingBuild(GearPreset preset)
         {
-            var preset = new GearPreset(build);
-
             foreach (var (slot, setting) in Settings.DontSaveSlots)
             {
                 if (!setting.Value) 
