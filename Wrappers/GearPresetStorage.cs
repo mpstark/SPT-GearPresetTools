@@ -54,7 +54,7 @@ namespace GearPresetTools.Wrappers
         public void SaveEquipmentAsBuild(string name, EquipmentClass equipment)
         {
             var oldKit = FindCustomBuildByName(name);
-            var mongoID = (oldKit == null) ? new MongoID(ClientUtils.SessionProfile) : oldKit.Id;
+            var mongoID = (oldKit == null) ? new MongoID(ClientUtils.SessionProfile) : oldKit.MongoId;
 
             SaveBuild(new GearPreset(mongoID, name, equipment));
         }

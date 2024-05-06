@@ -3,7 +3,6 @@ using BepInEx;
 using BepInEx.Logging;
 using GearPresetTools.Config;
 using GearPresetTools.Features;
-using GearPresetTools.Patches;
 
 namespace GearPresetTools
 {

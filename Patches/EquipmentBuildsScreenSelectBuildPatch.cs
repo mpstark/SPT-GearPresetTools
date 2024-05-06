@@ -7,11 +7,11 @@ using GearPresetTools.Wrappers;
 
 namespace GearPresetTools.Patches
 {
-    internal class EquipmentBuildScreenSelectBuildPatch : ModulePatch
+    internal class EquipmentBuildsScreenSelectBuildPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(EquipmentBuildsScreen).GetMethods().First(m => 
+            return typeof(EquipmentBuildsScreen).GetMethods().First(m =>
             {
                 if (m.ReturnType != typeof(void))
                 {

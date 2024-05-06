@@ -12,6 +12,9 @@ namespace GearPresetTools.Features
             new EquipmentBuildScreenClosePatch().Enable();
         }
 
+        /// <summary>
+        /// Trim the ProfilePresetConfig of invalid presets and save it
+        /// </summary>
         public static void SaveProfilePresetConfig()
         {
             var presetIds = GearPresetStorage.Instance.GetAllGearPresetIds();

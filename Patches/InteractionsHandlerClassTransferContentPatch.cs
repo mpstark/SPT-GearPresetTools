@@ -1,6 +1,7 @@
 using System.Reflection;
 using Aki.Reflection.Patching;
 using GearPresetTools.Features;
+using GearPresetTools.Utils;
 using HarmonyLib;
 
 namespace GearPresetTools.Patches
@@ -20,9 +21,9 @@ namespace GearPresetTools.Patches
             {
                 return;
             }
-            
+
             // copy the preset so that we don't actually modify the client version of the preset
-            var copied = presetItem.CloneItem();
+            var copied = presetItem.ReflectedCloneItem();
             presetItem = copied;
 
             PartialGearPresets.TryApplyIgnoredSlots(copied, toItem);

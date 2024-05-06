@@ -95,8 +95,12 @@ namespace GearPresetTools.Config
             }
 
             // get all slots that should be ignored
-            foreach (var (slot, shouldIgnore) in _profiles[profileId].Presets[presetId].SlotsToIgnore)
+            // can't use automatic (key, value) syntax here, since bsg has an extension method that adds a reference
+            foreach (var pair in _profiles[profileId].Presets[presetId].SlotsToIgnore)
             {
+                var slot = pair.Key;
+                var shouldIgnore = pair.Value;
+
                 if (shouldIgnore)
                 {
                     slots.Add(slot);

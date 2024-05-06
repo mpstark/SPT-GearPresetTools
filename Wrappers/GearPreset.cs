@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using EFT;
 using EFT.Builds;
-using EFT.InventoryLogic;
 using HarmonyLib;
 
 namespace GearPresetTools.Wrappers
@@ -16,8 +15,8 @@ namespace GearPresetTools.Wrappers
 
         // properties
         public object Value { get; }
-        public MongoID Id => (MongoID)_idProperty.GetValue(Value);
-        public string IdString => (MongoID)_idProperty.GetValue(Value);
+        public MongoID MongoId => (MongoID)_idProperty.GetValue(Value);
+        public string Id => MongoId.ToString();
         public EquipmentClass Equipment => (EquipmentClass)_equipmentProperty.GetValue(Value);
 
         public GearPreset(object value)
@@ -32,12 +31,7 @@ namespace GearPresetTools.Wrappers
 
         public GearPreset(MongoID mongoID, string name, EquipmentClass equipment, EEquipmentBuildType buildType = EEquipmentBuildType.Custom)
         {
-            Value = Activator.CreateInstance(WrappedType, new object[] { mongoID, name, equipment, EEquipmentBuildType.Custom }); 
-        }
-
-        public void RemoveItemFromSlot(EquipmentSlot slot)
-        {
-            Equipment.GetSlot(slot).RemoveItem();
+            Value = Activator.CreateInstance(WrappedType, new object[] { mongoID, name, equipment, EEquipmentBuildType.Custom });
         }
     }
 }

@@ -6,7 +6,7 @@ using HarmonyLib;
 
 namespace GearPresetTools.Patches
 {
-    internal class EquipmentBuildGearShowPatch : ModulePatch
+    internal class EquipmentBuildsGearShowPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -16,13 +16,13 @@ namespace GearPresetTools.Patches
         [PatchPostfix]
         public static void PatchPostfix(EquipmentTab __instance)
         {
-            // this patch will catch some equipment tab shows as well
+            // this patch will catch equipment tab shows as well
             if (__instance.GetType() != typeof(EquipmentBuildGear))
             {
                 return;
             }
 
-            PartialGearPresets.TryAdjustEquipmentBuildGear((EquipmentBuildGear)__instance);
+            PartialGearPresets.TryAdjustBuildGearPanel((EquipmentBuildGear)__instance);
         }
     }
 }
