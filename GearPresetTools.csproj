@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\Games\SPTarkov-3.8.1\</TarkovDir>
-    <TarkovDebugDir Condition=" '$(TarkovDebugDir)' == '' ">D:\Games\SPTarkov-3.8.1-Debug\</TarkovDebugDir>
+    <TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\Games\SPTarkov-3.8.3\</TarkovDir>
+    <TarkovDebugDir Condition=" '$(TarkovDebugDir)' == '' ">D:\Games\SPTarkov-3.8.3-Debug\</TarkovDebugDir>
     <TarkovManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</TarkovManagedDir>
     <TarkovBepInExCoreDir>$(TarkovDir)BepInEx\core\</TarkovBepInExCoreDir>
   </PropertyGroup>
@@ -72,7 +72,7 @@
 
   <!-- Gets the commit hash from git -->
   <Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-    <Exec 
+    <Exec
       Command="git describe --long --always --dirty --exclude=* --abbrev=8"
       ConsoleToMSBuild="True"
       IgnoreExitCode="False"

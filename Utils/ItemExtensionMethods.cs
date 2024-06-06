@@ -11,12 +11,10 @@ namespace GearPresetTools.Utils
     public static class ItemExtensionMethods
     {
         private static Type _extensionMethodType = PatchConstants.EftTypes.First(t =>
-        {
-            return t.IsAbstract && t.GetMethods().Any(m => m.Name == "CloneItem");
-        });
-
+            {
+                return t.IsAbstract && t.GetMethods().Any(m => m.Name == "CloneItem");
+            });
         private static MethodInfo _cloneItemMethod = AccessTools.Method(_extensionMethodType, "CloneItem");
-
 
         /// <summary>
         /// Clone the item without making a reference to GClassXXXX

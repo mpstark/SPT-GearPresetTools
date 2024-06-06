@@ -10,7 +10,6 @@ namespace GearPresetTools.Utils
     public static class ClientUtils
     {
         private static Type _profileInterface = typeof(ISession).GetInterfaces().First(i =>
-
             {
                 var properties = i.GetProperties();
                 return properties.Length == 2 &&

@@ -23,13 +23,13 @@ namespace GearPresetTools.Features
         private static FieldInfo _equipmentTabSlotViewsField = AccessTools.Field(typeof(EquipmentBuildGear), "_slotViews");
         private static FieldInfo _slotViewSlotHeaderField = AccessTools.Field(typeof(SlotView), "_slotHeader");
         private static MethodInfo _equipmentBuildsScreenShowBuildMethod = typeof(EquipmentBuildsScreen).GetMethods().First(m =>
-        {
-            var parameters = m.GetParameters();
-            return m.ReturnType == typeof(void) &&
-                   parameters.Count() == 1 &&
-                   parameters[0].ParameterType == GearPreset.WrappedType &&
-                   parameters[0].Name == "equipmentBuild";
-        });
+            {
+                var parameters = m.GetParameters();
+                return m.ReturnType == typeof(void) &&
+                    parameters.Count() == 1 &&
+                    parameters[0].ParameterType == GearPreset.WrappedType &&
+                    parameters[0].Name == "equipmentBuild";
+            });
 
         // FIXME: find these field more generically?
         private static FieldInfo _slotViewHeaderSelectActionField = AccessTools.Field(typeof(SlotViewHeader), "action_0");

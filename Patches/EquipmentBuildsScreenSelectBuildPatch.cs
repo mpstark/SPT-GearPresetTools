@@ -12,15 +12,15 @@ namespace GearPresetTools.Patches
         protected override MethodBase GetTargetMethod()
         {
             return typeof(EquipmentBuildsScreen).GetMethods().First(m =>
-            {
-                if (m.ReturnType != typeof(void))
                 {
-                    return false;
-                }
+                    if (m.ReturnType != typeof(void))
+                    {
+                        return false;
+                    }
 
-                var parameters = m.GetParameters();
-                return parameters.Count() == 1 && parameters[0].Name == "selectedBuild";
-            });
+                    var parameters = m.GetParameters();
+                    return parameters.Count() == 1 && parameters[0].Name == "selectedBuild";
+                });
         }
 
         [PatchPrefix]

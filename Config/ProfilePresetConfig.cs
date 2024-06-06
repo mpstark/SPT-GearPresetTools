@@ -15,7 +15,6 @@ namespace GearPresetTools.Config
         private static readonly Lazy<ProfilePresetConfig> lazy = new Lazy<ProfilePresetConfig>(() => new ProfilePresetConfig());
         public static ProfilePresetConfig Instance { get { return lazy.Value; } }
 
-
         private class PerPresetConfig
         {
             // this class is in case we want more per-preset config added on

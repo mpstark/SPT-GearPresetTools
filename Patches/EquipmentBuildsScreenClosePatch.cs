@@ -1,16 +1,16 @@
-using System;
 using System.Reflection;
 using Aki.Reflection.Patching;
 using EFT.UI;
 using GearPresetTools.Features;
 using HarmonyLib;
+using UnityEngine;
 
 namespace GearPresetTools.Patches
 {
     internal class EquipmentBuildScreenClosePatch : ModulePatch
     {
-        private static readonly TimeSpan _throttleLength = new TimeSpan(0, 0, 1); // 1 second
-        private static DateTime _lastCall= DateTime.MinValue;
+        private static readonly float _throttleLength = 1f;
+        private static float _lastCall = 0;
 
         protected override MethodBase GetTargetMethod()
         {
@@ -21,12 +21,12 @@ namespace GearPresetTools.Patches
         public static void PatchPostfix()
         {
             // throttle this, since it's called several times in succession
-            var timeDiff = DateTime.UtcNow - _lastCall;
+            var timeDiff = Time.time - _lastCall;
             if (timeDiff <= _throttleLength)
             {
                 return;
             }
-            _lastCall = DateTime.UtcNow;
+            _lastCall = Time.time;
 
             KeepProfilePresetConfigValid.SaveProfilePresetConfig();
         }
